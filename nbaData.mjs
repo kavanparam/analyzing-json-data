@@ -16,7 +16,8 @@ function fetchChallengeData(){
         // logObject(obj);
         turnoverProjection(obj);
         threePointProjection(obj);
-        topTenPGAssistToTurnover(obj)
+        topTenPGAssistToTurnover(obj);
+        topPER(obj);
     });
 }
 
@@ -52,7 +53,7 @@ function turnoverProjection(obj){
         return b;
     }, 0);
 
-    console.log(`The player projected to have the highest number of turnovers is ${highestTurnover.Name}!\n`);
+    console.log(`The player projected to have the highest number of turnovers is ${highestTurnover.Name} with ${highestTurnover.Turnovers} turnovers!\n`);
 }
 
 function threePointProjection(obj){
@@ -73,7 +74,7 @@ function threePointProjection(obj){
         return b;
     }, 0);
 
-    console.log(`The player projected to have the highest 3PT% with >= 50 games played is ${highestThreePoint.Name}!\n`);
+    console.log(`The player projected to have the highest 3PT% with >= 50 games played is ${highestThreePoint.Name} with 3PT FG%: ${highestThreePoint.ThreePointersPercentage}!\n`);
 }
 
 function topTenPGAssistToTurnover(obj){
@@ -93,7 +94,7 @@ function topTenPGAssistToTurnover(obj){
 
     const topTenList = pointGuardList.slice(0, 10)
 
-    console.log(`The top ten players with the highest projected assist to turnover ratio are: ${topTenList.map((i)=>` ${i.Name} (ratio: ${(i.Assists/i.Turnovers).toFixed(2)})`)}`);
+    console.log(`The top ten players with the highest projected assist to turnover ratio are: ${topTenList.map((i)=>` ${i.Name} (ratio: ${(i.Assists/i.Turnovers).toFixed(2)})`)}!`);
 
 }
 
