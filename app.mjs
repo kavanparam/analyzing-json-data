@@ -19,19 +19,14 @@ function logObject(obj){
 
 // Using .map transform the array of Pokémon to only contain the name and not the url.
 function cleanObject(obj){
-    // for(let i of obj.learned_by_pokemon){
-    //     console.log(i.name);
-    // }
 
     const pokemonArray = obj.learned_by_pokemon;  //an array of Pokemon objects
 
-    // pokemonArray.map((pokemon)=>{
-    //     pokemon.name = 'Test';
-    // });
+    const newPokemonArray = pokemonArray.map((pokemon)=>{
+        return pokemon.name;
+    });
 
-    console.log(pokemonArray);
-
-    console.log('\n'+'cleanObject done!');
+    console.log(newPokemonArray);
 }
 
 
