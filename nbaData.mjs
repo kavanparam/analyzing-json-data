@@ -133,10 +133,6 @@ function topPER(obj){
 
     const sortByPER = obj.sort((a, b) => {
         
-        //Assign to a, b
-        //Match sort method notation for descending order
-        //Check that players played >= 1 min
-
         if((a.Minutes && b.Minutes)>=1){
             
             return [
