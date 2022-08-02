@@ -16,7 +16,7 @@ function fetchChallengeData(){
         // logObject(obj);
         turnoverProjection(obj);
         threePointProjection(obj);
-        topTenPGAssistToTurnover(obj);
+        topPGAssistToTurnover(obj);
         topPER(obj);
     });
 }
@@ -54,6 +54,7 @@ function turnoverProjection(obj){
     }, 0);
 
     console.log(`The player projected to have the highest number of turnovers is ${highestTurnover.Name} with ${highestTurnover.Turnovers} turnovers!\n`);
+    return highestTurnover;
 }
 
 function threePointProjection(obj){
@@ -75,9 +76,10 @@ function threePointProjection(obj){
     }, 0);
 
     console.log(`The player projected to have the highest 3PT% with >= 50 games played is ${highestThreePoint.Name} with 3PT FG%: ${highestThreePoint.ThreePointersPercentage}!\n`);
+    return highestThreePoint;
 }
 
-function topTenPGAssistToTurnover(obj){
+function topPGAssistToTurnover(obj){
     //Challenge 3
     /* The assist to turnover ratio is a valuable metric for evaluating the efficiency of point guards. 
     Write a function that returns the top 10 point guards by projected assist to turnover ratio. Make sure you account for players projected to have 
@@ -94,7 +96,10 @@ function topTenPGAssistToTurnover(obj){
 
     const topTenList = pointGuardList.slice(0, 10)
 
-    console.log(`The top ten players with the highest projected assist to turnover ratio are: ${topTenList.map((i)=>` ${i.Name} (ratio: ${(i.Assists/i.Turnovers).toFixed(2)})`)}!`);
+    console.log(`The top ten players with the highest projected assist to turnover ratio are: ${topTenList.map((i)=>
+        ` ${i.Name} (ratio: ${(i.Assists/i.Turnovers).toFixed(2)})`)}!\n`);
+
+    return topTenList;
 
 }
 
@@ -120,7 +125,53 @@ function topPER(obj){
     Write a function that returns the top 10 players projected to have the highest PER. 
     Make sure you only include players projected to play at least one minute */
 
+    /*  ( (FieldGoalsMade * 85.910) + (Steals * 53.897) + (ThreePointersMade * 51.757) + (FreeThrowsMade * 46.845) + 
+        (OffensiveRebounds * 39.190) + (Assists * 34.677) + (DefensiveRebounds * 14.707) - (PersonalFouls * 17.174) - 
+        (FreeThrowsAttempted - FreeThrowsMade)*20.091 - (FieldGoalsAttempted - FieldGoalsMade)*39.190 -
+        (Turnovers * 53.897) ) * (1 / Minutes); 
+    */
+
+    const sortByPER = obj.sort((a, b) => {
+        
+        //Assign to a, b
+        //Match sort method notation for descending order
+        //Check that players played >= 1 min
+
+        if((a.Minutes && b.Minutes)>=1){
+            
+            return [
+                (((b.FieldGoalsMade * 85.910) + (b.Steals * 53.897) + (b.ThreePointersMade * 51.757) + 
+                    (b.FreeThrowsMade * 46.845) + (b.OffensiveRebounds * 39.190) + (b.Assists * 34.677) + 
+                    (b.DefensiveRebounds * 14.707) - (b.PersonalFouls * 17.174) - 
+                    (b.FreeThrowsAttempted - b.FreeThrowsMade)*20.091 - 
+                    (b.FieldGoalsAttempted - b.FieldGoalsMade)*39.190 -
+                    (b.Turnovers * 53.897)) * (1 / b.Minutes)) 
+                    
+                -
+
+                (((a.FieldGoalsMade * 85.910) + (a.Steals * 53.897) + (a.ThreePointersMade * 51.757) + 
+                    (a.FreeThrowsMade * 46.845) + (a.OffensiveRebounds * 39.190) + (a.Assists * 34.677) + 
+                    (a.DefensiveRebounds * 14.707) - (a.PersonalFouls * 17.174) - 
+                    (a.FreeThrowsAttempted - a.FreeThrowsMade)*20.091 - 
+                    (a.FieldGoalsAttempted - a.FieldGoalsMade)*39.190 -
+                    (a.Turnovers * 53.897)) * (1 / a.Minutes))];
+
+        }
+    });
+
+
+    const topTenList = sortByPER.slice(0, 10);
+
+    // console.log(topTenList);
     
+    console.log(  `The top 10 players projected to have the highest Player Efficiency Ratings are: ${topTenList.map((i) =>
+        ` ${i.Name} (PER: ${ (((i.FieldGoalsMade * 85.910) + (i.Steals * 53.897) + (i.ThreePointersMade * 51.757) + 
+                        (i.FreeThrowsMade * 46.845) + (i.OffensiveRebounds * 39.190) + (i.Assists * 34.677) + 
+                        (i.DefensiveRebounds * 14.707) - (i.PersonalFouls * 17.174) - 
+                        (i.FreeThrowsAttempted - i.FreeThrowsMade)*20.091 - 
+                        (i.FieldGoalsAttempted - i.FieldGoalsMade)*39.190 -
+                        (i.Turnovers * 53.897)) * (1 / i.Minutes)).toFixed(2)              
+                    })` )}!` );
 
 }
 
